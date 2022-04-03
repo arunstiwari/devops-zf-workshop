@@ -1,0 +1,27 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: mysql-app
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      environment: production
+  serviceName: mysql    
+  template:
+    metadata:
+      labels:
+        environment: production
+    spec:
+      containers:
+        - name: mysql-container
+          image: mysql 
+          env:
+            - name: MYSQL_DATABASE
+              value: db1
+            - name: MYSQL_ROOT_PASSWORD
+              value: root
+          ports:
+            - containerPort: 3306
+              name: mysql
+                

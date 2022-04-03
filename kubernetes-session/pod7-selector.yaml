@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: pod-name
+  namespace: mynamespace
+  labels:
+    environment: production
+    team: devops-infra
+    project: payment-gateway
+
+spec:
+  containers:
+    - name: container1
+      image: nginx

@@ -1,0 +1,45 @@
+pipeline{
+    agent any
+    tools {
+      maven 'mvn'
+    }
+    stages{
+        stage('Build Stage'){
+            steps{
+                echo "Building the Project"
+                sh 'mvn clean package'
+            }
+            post{
+              success{
+                  echo "My project was built successfully"
+                  junit allowEmptyResults: true, testResults: 'target/surefire-reports/*.xml'
+                  archiveArtifacts 'target/*.jar'
+              }
+              failure{
+                // send some email to group
+                echo " My project had compilation error "
+              }
+            }
+        }
+        stage('Static Code Analysis'){
+            steps{
+                echo "Analyzing the code with Sonar"
+                 withSonarQubeEnv('sonarqube'){
+                  sh "mvn verify org.sonarsource.scanner.maven:sonar-maven-plugin:sonar"
+                }
+            }
+        }
+        stage('Build a Docker Image'){
+            steps{
+                echo "Building the docker Image"
+                sh "docker build -t arunstiwari/userservice:1.0 ."
+            }
+        }
+        stage('Going to trigger the Acceptance Pipeline'){
+            steps{
+                echo "Going to trigger the Acceptance Pipeline"
+                build job: 'equity-acceptance-pipeline'
+            }
+        }
+    }
+}

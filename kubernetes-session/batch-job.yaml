@@ -1,0 +1,20 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: data-cleanup-job
+  namespace: mynamespace
+  labels:
+    jobgroup: housekeeping-job
+spec:
+  template:
+    metadata:
+      name: housekeeping-job
+      labels:
+        jobgroup: housekeeping-job
+    spec:
+      containers:
+        - name: batch-container
+          image: devopscube/kubernetes-job-demo:latest
+          args: ["30"]
+      restartPolicy: OnFailure       
+

@@ -1,0 +1,11 @@
+FROM basic-app-base:latest
+
+RUN wget -O test.txt https://github.com/arunstiwari/zf-workshop/blob/main/week1/day1/dummy.txt
+
+RUN mkdir -p  /var/www/html
+
+WORKDIR /var/www/html
+
+ADD Dockerfile.tar.gz /var/www/html
+
+CMD ["cat", " Dockerfile"]

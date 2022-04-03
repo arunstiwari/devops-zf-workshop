@@ -1,0 +1,28 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: hostpath-example
+  labels:
+    name: myweb
+    run: myweb
+spec:
+  replicas: 1 
+  selector:
+     matchLabels:
+       run: myweb
+  template:
+     metadata:
+       labels:
+         run: myweb
+     spec:
+       containers:
+         - name: myweb
+           image: centos/httpd 
+           volumeMounts:
+             - mountPath: /devops 
+               name: myvolume
+       volumes:
+         - name: myvolume
+           hostPath:
+             path: /root/python
+             type: Directory

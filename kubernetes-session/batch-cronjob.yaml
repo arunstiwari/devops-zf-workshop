@@ -1,0 +1,22 @@
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: data-cleanup-job
+  namespace: mynamespace
+  labels:
+    jobgroup: housekeeping-job
+spec:
+  schedule: "0,5,7,10,15 * * * * "      
+  jobTemplate:
+    spec:
+      template:
+        metadata:
+           name: housekeeping-job
+           labels:
+             jobgroup: housekeeping-job
+        spec:
+          containers:
+            - name: batch-container
+              image: devopscube/kubernetes-job-demo:latest
+              args: ["30"]
+          restartPolicy: OnFailure   

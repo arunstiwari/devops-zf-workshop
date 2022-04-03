@@ -1,0 +1,25 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nginx-deployment
+  labels:
+    app: nginx
+spec:
+  replicas: 10
+  strategy:
+    type: Recreate
+  selector:
+    matchLabels:
+      app: nginx
+      environment: dev
+  template:
+    metadata:
+      labels:
+        app: nginx
+        environment: dev
+        team: infra-team
+    spec:
+      containers:
+        - image: nginx
+          name: nginx-container      
+
